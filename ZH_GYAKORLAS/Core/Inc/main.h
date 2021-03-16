@@ -88,8 +88,6 @@ void Error_Handler(void);
 #define LCD_DATA_7_GPIO_Port GPIOB
 #define RED_Pin GPIO_PIN_14
 #define RED_GPIO_Port GPIOB
-#define GREEN_Pin GPIO_PIN_7
-#define GREEN_GPIO_Port GPIOC
 #define KB_PC6_OUT_row4_Pin GPIO_PIN_14
 #define KB_PC6_OUT_row4_GPIO_Port GPIOG
 /* USER CODE BEGIN Private defines */
