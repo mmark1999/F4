@@ -24,6 +24,7 @@
 /* USER CODE BEGIN Includes */
 #include "lcd.h"
 #include "matrix.h"
+#include "String.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -95,7 +96,16 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	 matrix_search();
+	  matrix_search();
+	 char asd[] = "";
+	 int a = get_key();
+	 sprintf(asd,"%d",a);
+	 if(a<12)
+	 {
+		 LCD_cmd(0x01);
+		 LCD_string(asd);
+	 }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -158,11 +168,11 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOG_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOF, KB_PC0_IN_LEFT_Pin|KB_PC3_OUT_row1_Pin|KB_PC5_OUT_row3_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOF, KB_PC3_OUT_row1_Pin|KB_PC5_OUT_row3_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, LCD_RS_Pin|KB_PC1_IN_CENTER_Pin|LCD_E_Pin|KB_PC2_IN_RIGHT_Pin
-                          |LCD_DATA_4_Pin|KB_PC4_OUT_row2_Pin|LCD_DATA_5_Pin|LCD_DATA_6_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOE, LCD_RS_Pin|LCD_E_Pin|LCD_DATA_4_Pin|KB_PC4_OUT_row2_Pin
+                          |LCD_DATA_5_Pin|LCD_DATA_6_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, LCD_DATA_7_Pin|LED_BLUE_Pin, GPIO_PIN_RESET);
@@ -170,20 +180,32 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(KB_PC6_OUT_row4_GPIO_Port, KB_PC6_OUT_row4_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : KB_PC0_IN_LEFT_Pin KB_PC3_OUT_row1_Pin KB_PC5_OUT_row3_Pin */
-  GPIO_InitStruct.Pin = KB_PC0_IN_LEFT_Pin|KB_PC3_OUT_row1_Pin|KB_PC5_OUT_row3_Pin;
+  /*Configure GPIO pin : KB_PC0_IN_LEFT_Pin */
+  GPIO_InitStruct.Pin = KB_PC0_IN_LEFT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(KB_PC0_IN_LEFT_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : KB_PC3_OUT_row1_Pin KB_PC5_OUT_row3_Pin */
+  GPIO_InitStruct.Pin = KB_PC3_OUT_row1_Pin|KB_PC5_OUT_row3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : LCD_RS_Pin KB_PC1_IN_CENTER_Pin LCD_E_Pin KB_PC2_IN_RIGHT_Pin
-                           LCD_DATA_4_Pin KB_PC4_OUT_row2_Pin LCD_DATA_5_Pin LCD_DATA_6_Pin */
-  GPIO_InitStruct.Pin = LCD_RS_Pin|KB_PC1_IN_CENTER_Pin|LCD_E_Pin|KB_PC2_IN_RIGHT_Pin
-                          |LCD_DATA_4_Pin|KB_PC4_OUT_row2_Pin|LCD_DATA_5_Pin|LCD_DATA_6_Pin;
+  /*Configure GPIO pins : LCD_RS_Pin LCD_E_Pin LCD_DATA_4_Pin KB_PC4_OUT_row2_Pin
+                           LCD_DATA_5_Pin LCD_DATA_6_Pin */
+  GPIO_InitStruct.Pin = LCD_RS_Pin|LCD_E_Pin|LCD_DATA_4_Pin|KB_PC4_OUT_row2_Pin
+                          |LCD_DATA_5_Pin|LCD_DATA_6_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : KB_PC1_IN_CENTER_Pin KB_PC2_IN_RIGHT_Pin */
+  GPIO_InitStruct.Pin = KB_PC1_IN_CENTER_Pin|KB_PC2_IN_RIGHT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
   /*Configure GPIO pins : LCD_DATA_7_Pin LED_BLUE_Pin */
